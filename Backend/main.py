@@ -9,9 +9,11 @@ import base64
 from PIL import Image
 
 os.environ['REPLICATE_API_TOKEN'] = '37452f1f1f6c31a1ab66ce785166168133f2e0b0'
+from flask_cors import CORS
+from productsearch import get_products
 
 app = Flask(__name__)
-model = replicate.models.get("andreasjansson/stable-diffusion-wip")
+
 
 @app.route("/generate", methods=["POST"])
 def _generate():
@@ -68,13 +70,13 @@ def _get_products():
     data = request.get_json()
 
     shirt = data["shirt"]
-    pants = data["pants"]
+    pant = data["pants"]
 
     # Post your code here
+    shirts = get_products(shirt)
+    pants = get_products(pant)
 
-
-
-    return jsonify({}), 200
+    return {"shirts": shirts, "pants": pants}, 200
 
 
 if __name__ == "__main__":
