@@ -42,7 +42,7 @@ def _generate():
         f.write(png_recovered)
 
     output = model.predict(prompt=prompt, init_image=open("image.png", "rb"), mask=open(
-        "mask_y.png", "rb") if only_shirt else open("mask.png", "rb"), seed=2)
+        "mask_y.png", "rb") if only_shirt else open("mask.png", "rb"))
 
     r = requests.get(output[0])
     with open("output.png", "wb") as f:
