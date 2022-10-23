@@ -152,7 +152,8 @@ const Main = () => {
             onClick={async () => {
               setIsLoading(true);
 
-              const base64Image = await imageToBase64(image as File);
+              let base64Image = await imageToBase64(image as File);
+              base64Image = base64Image.substring(base64Image.indexOf('data:image/png;base64,') + 'data:image/png;base64,'.length);
 
               const [newImage, products] = await Promise.all([
                 generateImage({

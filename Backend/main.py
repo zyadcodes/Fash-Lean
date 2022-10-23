@@ -5,14 +5,15 @@ import replicate
 from flask import Flask, request, jsonify
 import os
 import requests
-import base64 
-from PIL import Image
+import base64
 
 os.environ['REPLICATE_API_TOKEN'] = '37452f1f1f6c31a1ab66ce785166168133f2e0b0'
 from flask_cors import CORS
 from productsearch import get_products
 
 app = Flask(__name__)
+CORS(app)
+model = replicate.models.get("andreasjansson/stable-diffusion-wip")
 
 
 @app.route("/generate", methods=["POST"])
