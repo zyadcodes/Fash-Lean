@@ -3,6 +3,8 @@
 import os
 
 from flask import Flask, request, jsonify
+import json
+from productsearch import get
 
 app = Flask(__name__)
 
@@ -27,13 +29,13 @@ def _get_products():
     data = request.get_json()
 
     shirt = data["shirt"]
-    pants = data["pants"]
+    pant = data["pants"]
 
     # Post your code here
+    shirts = get(shirt)
+    pants = get(pant)
 
-
-
-    return jsonify({}), 200
+    return {"shirts": shirts, "pants": pants}, 200
 
 
 if __name__ == "__main__":
