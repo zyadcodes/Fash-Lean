@@ -41,10 +41,10 @@ def _generate():
     #     f.write(png_recovered)
         
     print("Running prediction...")
-    output = model.predict(prompt=prompt, init_image=open("Backend/init_image_y.png", "rb"), mask=open("Backend/mask_y.png", "rb") if only_shirt else open("Backend/mask.png", "rb"), seed=2)
+    output = model.predict(prompt=prompt, init_image=open("init_image_y.png", "rb"), mask=open("mask_y.png", "rb") if only_shirt else open("mask.png", "rb"), seed=2)
 
     r = requests.get(output[0])
-    with open("Backend/output.png", "wb") as f:
+    with open("output.png", "wb") as f:
         f.write(r.content)
         
     # use the mask to merge the output with the input image with output.png
