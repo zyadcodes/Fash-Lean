@@ -1,0 +1,19 @@
+.Button {
+  display: flex;
+  border: solid 1px;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-family: "Montserrat";
+  padding: 5px 10px;
+  border-radius: 10px;
+  outline: none;
+  transition: 0.3s;
+
+  &__clicked {
+    background-color: white !important;
+    color: #f63690;
+    border: solid #f63690 1px;
+  }
+}
