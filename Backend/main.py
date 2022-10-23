@@ -1,5 +1,7 @@
 # To run: flask --app main run
 
+from productsearch import get_products
+from flask_cors import CORS
 import os
 import replicate
 from flask import Flask, request, jsonify
@@ -8,8 +10,6 @@ import requests
 import base64
 
 os.environ['REPLICATE_API_TOKEN'] = '37452f1f1f6c31a1ab66ce785166168133f2e0b0'
-from flask_cors import CORS
-from productsearch import get_products
 
 app = Flask(__name__)
 CORS(app)
@@ -24,7 +24,7 @@ def _generate():
     shirt = data["shirt"]
     pants = data["pants"]
     image = data["image"]
-    
+
     only_shirt = False
     if shirt and pants:
         prompt = f"A person wearing a {shirt} and {pants}"
@@ -35,35 +35,23 @@ def _generate():
         prompt = f"A person wearing {pants}"
     else:
         return jsonify({"error": "No shirt or pants specified"})
-    
-    # png_recovered = base64.b64decode(image)
-    # with open("Backend/image.png", "wb") as f:
-    #     f.write(png_recovered)
-        
-    print("Running prediction...")
-    output = model.predict(prompt=prompt, init_image=open("init_image_y.png", "rb"), mask=open("mask_y.png", "rb") if only_shirt else open("mask.png", "rb"), seed=2)
+
+    png_recovered = base64.b64decode(image)
+    with open("image.png", "wb") as f:
+        f.write(png_recovered)
+
+    output = model.predict(prompt=prompt, init_image=open("image.png", "rb"), mask=open(
+        "mask_y.png", "rb") if only_shirt else open("mask.png", "rb"), seed=2)
 
     r = requests.get(output[0])
     with open("output.png", "wb") as f:
         f.write(r.content)
-        
-    # use the mask to merge the output with the input image with output.png
-    # return the merged image
-    # input_image = Image.open("Backend/image.png")
-    # output_image = Image.open("Backend/output.png")    
-    # mask_image = Image.open("Backend/mask.png")
-    
-    # output_image = Image.composite(output_image, input_image, mask_image)
-    
-    # with open("Backend/output.png", "wb") as f:
-        # output_image.save(f)
-    
-    # encode the image to base64
-    # with open("Backend/output.png", "rb") as f:
+
     encoded_string = base64.b64encode(r.content)
     encoded_string = encoded_string.decode("utf-8")
-        
+
     return jsonify({"image": encoded_string})
+
 
 @app.route("/get_products", methods=["POST"])
 def _get_products():

@@ -44,7 +44,10 @@ const Main = () => {
           }}
         >
           {hasGenerated ? (
-            <img src={image as string} className={styles.image} />
+            <img
+              src={`data:image/png;base64,${image as string}`}
+              className={styles.image}
+            />
           ) : image ? (
             <img
               src={URL.createObjectURL(image as File)}
@@ -153,7 +156,10 @@ const Main = () => {
               setIsLoading(true);
 
               let base64Image = await imageToBase64(image as File);
-              base64Image = base64Image.substring(base64Image.indexOf('data:image/png;base64,') + 'data:image/png;base64,'.length);
+              base64Image = base64Image.substring(
+                base64Image.indexOf("data:image/png;base64,") +
+                  "data:image/png;base64,".length
+              );
 
               const [newImage, products] = await Promise.all([
                 generateImage({

@@ -29,7 +29,9 @@ export const generateImage = async (
 ): Promise<GenerateResult> => {
   const result = await callAPI("/generate", params);
 
-  return result as GenerateResult;
+  return {
+    result: result.image,
+  };
 };
 
 interface GetProductsParams {
