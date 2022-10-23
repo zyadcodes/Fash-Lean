@@ -17,12 +17,17 @@ async def get_products(query):
     links = get_links(query)
     objs = []
     for i in itertools.islice(links, 3):
-        content, preview  = urllib.request.urlopen(i).read(), link_preview(i)
+        try:
+            content = urllib.request.urlopen(i).read()
+            preview = link_preview(i)
 
-        content = bs(content, features="html.parser")
-        objs.append({
-            "title": preview.title,
-            "link": i,
-            "image": preview.image
-        })
+            content = bs(content, features="html.parser")
+            objs.append({
+                "title": content.title.text,
+                "link": i,
+                "image": preview.image
+            })
+        except:
+            print("failed")
+
     return objs
