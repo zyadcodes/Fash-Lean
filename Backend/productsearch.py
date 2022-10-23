@@ -13,7 +13,7 @@ def preview_link(url):
   preview = link_preview(url, content)
   return preview
 
-def get(query):
+def get_products(query):
   links = get_links(query)
   objs = []
   for i in itertools.islice(links, 3):
