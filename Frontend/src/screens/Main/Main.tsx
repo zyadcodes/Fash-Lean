@@ -29,6 +29,8 @@ const Main = () => {
   // Return types from API
   const [products, setProducts] = useState<GetProductsResult>();
 
+  console.log(products);
+
   return (
     <div className={styles.Main}>
       <LoadingOverlay isOpen={isLoading} />
