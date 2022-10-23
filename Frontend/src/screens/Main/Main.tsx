@@ -10,7 +10,7 @@ import { saveAs } from "file-saver";
 import styles from "./styles.module.scss";
 import { generateImage, getProducts, GetProductsResult } from "../../api/api";
 import { imageToBase64 } from "../../utils";
-import { ParticlesBackground } from "../";
+import { ParticlesBackground, ModalType, ProductsModal } from "../";
 
 const Main = () => {
   // Ref for selecting an image
@@ -25,14 +25,25 @@ const Main = () => {
 
   // State variables controlling state of generation
   const [isLoading, setIsLoading] = useState(false);
-  const [hasGenerated, setHasGenated] = useState(false);
+  const [hasGenerated, setHasGenerated] = useState(false);
 
   // Return types from API
   const [products, setProducts] = useState<GetProductsResult>();
 
+  // Modal state managemet
+  const [isProductsModalVisible, setIsProductsModalVisible] = useState<
+    boolean | ModalType
+  >(false);
+
   return (
     <>
       <ParticlesBackground />
+      <ProductsModal
+        isOpen={isProductsModalVisible !== false}
+        modalType={isProductsModalVisible as ModalType}
+        products={products as GetProductsResult}
+        onClose={() => setIsProductsModalVisible(false)}
+      />
       <div className={styles.Main}>
         <LoadingOverlay isOpen={isLoading} />
         <div
@@ -46,7 +57,7 @@ const Main = () => {
           {hasGenerated ? (
             <img
               src={`data:image/png;base64,${image as string}`}
-              className={styles.image}
+              className={classnames(styles.image, styles.image__generated)}
             />
           ) : image ? (
             <img
@@ -63,30 +74,32 @@ const Main = () => {
             onChange={(event) => {
               if (event.target.files && event.target.files.length > 0) {
                 setImage(event.target.files[0]);
+                setPantsText("");
+                setShirtText("");
+                setHasGenerated(false)
               }
             }}
             hidden
           />
-
           {hasGenerated && (
             <div className={styles.overlayButtons}>
-              <div className={styles.overlayButtons__button}>
-                <FaTshirt
-                  className={classnames({
-                    [styles.input__icon_focused]: isShirtInputFocused,
-                    [styles.input__icon_unfocused]: !isShirtInputFocused,
-                  })}
-                  size={15}
-                />
+              <div
+                className={styles.overlayButtons__button}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsProductsModalVisible("shirts");
+                }}
+              >
+                <FaTshirt size={25} />
               </div>
-              <div className={styles.overlayButtons__button}>
-                <GiUnderwearShorts
-                  className={classnames({
-                    [styles.input__icon_focused]: isPantsInputFocused,
-                    [styles.input__icon_unfocused]: !isPantsInputFocused,
-                  })}
-                  size={15}
-                />
+              <div
+                className={styles.overlayButtons__button}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsProductsModalVisible("pants");
+                }}
+              >
+                <GiUnderwearShorts size={25} />
               </div>
             </div>
           )}
@@ -176,7 +189,7 @@ const Main = () => {
               setImage(newImage.result);
               setProducts(products);
 
-              setHasGenated(true);
+              setHasGenerated(true);
               setIsLoading(false);
             }}
           />

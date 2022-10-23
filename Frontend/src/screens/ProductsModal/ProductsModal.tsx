@@ -1,0 +1,49 @@
+import React from "react";
+import { GetProductsResult } from "../../api/api";
+import styles from "./styles.module.scss";
+import classNames from "classnames";
+import Modal from "react-awesome-modal";
+
+export type ModalType = "shirts" | "pants";
+
+interface ComponentProps {
+  className?: string;
+  isOpen: boolean;
+  modalType: ModalType | undefined;
+  products: GetProductsResult | undefined;
+  onClose: () => void;
+}
+
+const ProductsModal = (props: ComponentProps) => {
+  const { className, isOpen, modalType, products, onClose } = props;
+
+  console.log(products)
+
+  return (
+    <Modal
+      visible={isOpen}
+      width="300"
+      height="350"
+      effect="fadeInUp"
+      onClickAway={onClose}
+    >
+      <div className={classNames(styles.ProductsModal, className)}>
+        {products &&
+          modalType &&
+          products[modalType].map((eachProduct, i) => (
+            <div key={i} className={styles.product}>
+              <img
+                className={styles.product__image}
+                src={eachProduct.image}
+              />
+              <a href={eachProduct.link} className={styles.product__link}>
+                {eachProduct.title}
+              </a>
+            </div>
+          ))}
+      </div>
+    </Modal>
+  );
+};
+
+export { ProductsModal };

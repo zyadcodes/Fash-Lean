@@ -25,10 +25,15 @@
 }
 
 .image {
+  right: -22.5px;
   height: 300px;
   width: 300px;
   border-radius: 10px;
   object-fit: cover;
+
+  &__generated {
+    position: relative;
+  }
 }
 
 .input {
@@ -60,8 +65,18 @@
   flex-direction: column;
   height: 100%;
   justify-content: space-evenly;
-  position: fixed;
-  right: 15;
+  position: relative;
+  right: 35px;
+
+  &__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: #7a3b69;
+  }
 }
 
 .buttons {

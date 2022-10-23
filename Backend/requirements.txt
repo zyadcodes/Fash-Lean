@@ -3,5 +3,8 @@ gunicorn==20.1.0
 replicate
 linkpreview==0.2.2
 Flask-Cors==3.0.10
+Flask[Async]==2.1.0
 beautifulsoup4==4.11.1
 google==3.0.0
+aioflask==0.4.0
+asgiref==3.5.2

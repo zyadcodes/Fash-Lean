@@ -1,0 +1,24 @@
+.ProductsModal {
+  padding: 10px 20px;
+}
+
+.product {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+
+  &__link {
+    font-family: "Montserrat";
+    font-size: 14px;
+    font-weight: bold;
+    color: #7a3b69;
+  }
+
+  &__image {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    object-fit: cover;
+  }
+}

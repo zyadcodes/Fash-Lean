@@ -42,8 +42,8 @@ interface GetProductsParams {
 export interface GetProductsResult {
   [key: string]: {
     title: string;
-    image: string;
     link: string;
+    image: string;
   }[];
 }
 

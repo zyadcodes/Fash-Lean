@@ -8,6 +8,7 @@ from flask import Flask, request, jsonify
 import os
 import requests
 import base64
+import asyncio
 
 os.environ['REPLICATE_API_TOKEN'] = '37452f1f1f6c31a1ab66ce785166168133f2e0b0'
 
@@ -54,7 +55,7 @@ def _generate():
 
 
 @app.route("/get_products", methods=["POST"])
-def _get_products():
+async def _get_products():
 
     data = request.get_json()
 
@@ -62,8 +63,7 @@ def _get_products():
     pant = data["pants"]
 
     # Post your code here
-    shirts = get_products(shirt)
-    pants = get_products(pant)
+    shirts, pants = await asyncio.gather(get_products(shirt), get_products(pant))
 
     return {"shirts": shirts, "pants": pants}, 200
 
