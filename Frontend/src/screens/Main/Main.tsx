@@ -8,13 +8,15 @@ import { LoadingOverlay } from "../LoadingOverlay/LoadingOverlay";
 import { saveAs } from "file-saver";
 
 import styles from "./styles.module.scss";
+import { generateImage, getProducts, GetProductsResult } from "../../api/api";
+import { imageToBase64 } from "../../utils";
 
 const Main = () => {
   // Ref for selecting an image
   const imageSelectRef = useRef<HTMLInputElement>(null);
 
   // State variables for inputs
-  const [image, setImage] = useState<File>();
+  const [image, setImage] = useState<File | string>();
   const [shirtText, setShirtText] = useState("");
   const [pantsText, setPantsText] = useState("");
   const [isShirtInputFocused, setIsShirtInputFocused] = useState(false);
@@ -23,6 +25,9 @@ const Main = () => {
   // State variables controlling state of generation
   const [isLoading, setIsLoading] = useState(false);
   const [hasGenerated, setHasGenated] = useState(false);
+
+  // Return types from API
+  const [products, setProducts] = useState<GetProductsResult>();
 
   return (
     <div className={styles.Main}>
@@ -35,9 +40,17 @@ const Main = () => {
           }
         }}
       >
-        {(image && (
-          <img src={URL.createObjectURL(image)} className={styles.image} />
-        )) || <AiFillCamera size={40} />}
+        {hasGenerated ? (
+          <img src={image as string} className={styles.image} />
+        ) : image ? (
+          <img
+            src={URL.createObjectURL(image as File)}
+            className={styles.image}
+          />
+        ) : (
+          <AiFillCamera size={40} />
+        )}
+
         <input
           ref={imageSelectRef}
           type="file"
@@ -101,7 +114,7 @@ const Main = () => {
             text={"Share"}
             onClick={() => {
               if (image) {
-                saveAs(image, image.name);
+                saveAs(image as string, (image as File).name);
               }
             }}
           />
@@ -111,8 +124,25 @@ const Main = () => {
             [styles.buttons__generate__lone]: !hasGenerated,
           })}
           text={"Generate"}
-          onClick={() => {
+          onClick={async () => {
             setIsLoading(true);
+
+            const base64Image = await imageToBase64(image as File);
+
+            const newImage = await generateImage({
+              shirt: shirtText,
+              pants: pantsText,
+              image: base64Image,
+            });
+
+            const products = await getProducts({
+              shirt: shirtText,
+              pants: pantsText,
+            });
+
+            setImage(newImage.result);
+            setProducts(products);
+
             setTimeout(() => {
               setHasGenated(true);
               setIsLoading(false);
