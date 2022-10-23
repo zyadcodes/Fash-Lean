@@ -35,8 +35,8 @@ export const generateImage = async (
 };
 
 interface GetProductsParams {
-  shirt: string;
-  pants: string;
+  shirt?: string;
+  pants?: string;
 }
 
 export interface GetProductsResult {

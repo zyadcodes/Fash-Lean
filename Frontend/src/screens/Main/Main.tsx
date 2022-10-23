@@ -43,6 +43,8 @@ const Main = () => {
         modalType={isProductsModalVisible as ModalType}
         products={products as GetProductsResult}
         onClose={() => setIsProductsModalVisible(false)}
+        shirtsText={shirtText}
+        pantsText={pantsText}
       />
       <div className={styles.Main}>
         <LoadingOverlay isOpen={isLoading} />
@@ -76,7 +78,7 @@ const Main = () => {
                 setImage(event.target.files[0]);
                 setPantsText("");
                 setShirtText("");
-                setHasGenerated(false)
+                setHasGenerated(false);
               }
             }}
             hidden
@@ -181,8 +183,10 @@ const Main = () => {
                   image: base64Image,
                 }),
                 getProducts({
-                  shirt: shirtText,
-                  pants: pantsText,
+                  shirt:
+                    (shirtText.trim().length > 0 && shirtText) || undefined,
+                  pants:
+                    (pantsText.trim().length > 0 && pantsText) || undefined,
                 }),
               ]);
 

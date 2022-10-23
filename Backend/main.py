@@ -59,11 +59,22 @@ async def _get_products():
 
     data = request.get_json()
 
-    shirt = data["shirt"]
-    pant = data["pants"]
+    shirt = None
+    pant = None
 
-    # Post your code here
-    shirts, pants = await asyncio.gather(get_products(shirt), get_products(pant))
+    if "shirt" in data:
+        shirt = data["shirt"]
+    if "pant" in data:
+        pant = data["pants"]
+
+    shirts = []
+    pants = []
+
+    if shirt is not None:
+        shirts = await get_products(shirt)
+
+    if pant is not None:
+        pants = await get_products(pant)
 
     return {"shirts": shirts, "pants": pants}, 200
 
