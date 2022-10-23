@@ -17,8 +17,6 @@ interface ComponentProps {
 const ProductsModal = (props: ComponentProps) => {
   const { className, isOpen, modalType, products, onClose } = props;
 
-  console.log(products)
-
   return (
     <Modal
       visible={isOpen}
@@ -32,10 +30,6 @@ const ProductsModal = (props: ComponentProps) => {
           modalType &&
           products[modalType].map((eachProduct, i) => (
             <div key={i} className={styles.product}>
-              <img
-                className={styles.product__image}
-                src={eachProduct.image}
-              />
               <a href={eachProduct.link} className={styles.product__link}>
                 {eachProduct.title}
               </a>
