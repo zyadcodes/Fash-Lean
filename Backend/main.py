@@ -36,12 +36,12 @@ def _generate():
     else:
         return jsonify({"error": "No shirt or pants specified"})
     
-    png_recovered = base64.b64decode(image)
-    with open("Backend/image.png", "wb") as f:
-        f.write(png_recovered)
+    # png_recovered = base64.b64decode(image)
+    # with open("Backend/image.png", "wb") as f:
+    #     f.write(png_recovered)
         
     print("Running prediction...")
-    output = model.predict(prompt=prompt, init_image=open("Backend/image.png", "rb"), mask=open("Backend/mask_y.png", "rb") if only_shirt else open("Backend/mask.png", "rb"), seed=2)
+    output = model.predict(prompt=prompt, init_image=open("Backend/init_image_y.png", "rb"), mask=open("Backend/mask_y.png", "rb") if only_shirt else open("Backend/mask.png", "rb"), seed=2)
 
     r = requests.get(output[0])
     with open("Backend/output.png", "wb") as f:
