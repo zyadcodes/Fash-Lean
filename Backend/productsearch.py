@@ -1,26 +1,22 @@
 # Imports
-import urllib.request as req
-from linkpreview import link_preview
+import urllib.request
+from bs4 import BeautifulSoup as bs
 import itertools
 from googlesearch import search
 
 # retrieve links from query
 def get_links(query):
-  return search(query, tld="co.in", num=3, stop=3, pause=2)
-
-def preview_link(url):
-  content = req.urlopen(url).read()
-  preview = link_preview(url, content)
-  return preview
+  return search(query, tld="com", num=3, stop=3, pause=0)
 
 def get_products(query):
   links = get_links(query)
   objs = []
   for i in itertools.islice(links, 3):
-    preview = preview_link(i)
+    content = urllib.request.urlopen(i).read()
+    content = bs(content, features="html.parser")
+    title = content.find('title').text
     objs.append({
-        "title": preview.title,
-        "image": preview.image,
+        "title": title,
         "link": i
     })
   return objs
