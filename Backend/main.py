@@ -10,7 +10,7 @@ import requests
 import base64
 import asyncio
 
-os.environ['REPLICATE_API_TOKEN'] = '78b4e3a1e2dddf2ece7b90861a4b180d7247cdda'
+os.environ['REPLICATE_API_TOKEN'] = '38e87b1bafa18c764178cb848a0118784b1c8d71'
 
 app = Flask(__name__)
 CORS(app)

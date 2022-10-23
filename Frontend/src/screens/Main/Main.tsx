@@ -157,7 +157,10 @@ const Main = () => {
               text={"Share"}
               onClick={() => {
                 if (image) {
-                  saveAs(image as string, (image as File).name);
+                  saveAs(
+                    `data:image/png;base64,${image as string}`,
+                    "Your Image"
+                  );
                 }
               }}
             />
